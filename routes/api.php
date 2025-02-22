@@ -20,7 +20,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/users', [UserController::class, 'index']);
     Route::get('/users/{user}', [UserController::class, 'show']);
 
-
     Route::post('/users', [UserController::class, 'store'])->middleware('permission:create user');;
     Route::put('/users/{user}', [UserController::class, 'update'])->middleware('permission:edit user');
     Route::delete('/users/{user}', [UserController::class, 'destroy'])->middleware('permission:delete user');
@@ -30,10 +29,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/users/{id}/revoke-permission-to/{permission}', [UserController::class, 'revokePermissionTo'])->middleware('role:admin');
 });
 
-
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
-
 
 
 

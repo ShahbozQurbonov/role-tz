@@ -409,7 +409,7 @@
                     {
                         "name": "id",
                         "in": "path",
-                        "description": "Foydalanuvchi ID",
+                        "description": "User ID",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -448,7 +448,7 @@
                     {
                         "name": "id",
                         "in": "path",
-                        "description": "Foydalanuvchi ID",
+                        "description": "User ID",
                         "required": true,
                         "schema": {
                             "type": "integer"

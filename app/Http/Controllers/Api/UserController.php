@@ -220,73 +220,70 @@ class UserController extends Controller
     }
 
     /**
- * @OA\Delete(
- *     path="/api/users/{id}/remove-role/{role}",
- *     summary="Remove a role from a user",
- *     tags={"Users"},
- *     security={{ "bearerAuth":{} }},
- *     @OA\Parameter(
- *         name="id",
- *         in="path",
- *         required=true,
- *         @OA\Schema(type="integer"),
- *         description="Foydalanuvchi ID"
- *     ),
- *     @OA\Parameter(
- *         name="role",
- *         in="path",
- *         required=true,
- *         @OA\Schema(type="string"),
- *         description="Roles: admin, user"
- *     ),
- *     @OA\Response(response=200, description="Deleted")
- * )
- */
-public function removeRole(User $user, $role)
-{
-    // Foydalanuvchida rol mavjudligini tekshirish
-    if (!$user->hasRole($role)) {
-        return response()->json(['message' => 'Foydalanuvchida bu rol mavjud emas'], 400);
+     * @OA\Delete(
+     *     path="/api/users/{id}/remove-role/{role}",
+     *     summary="Remove a role from a user",
+     *     tags={"Users"},
+     *     security={{ "bearerAuth":{} }},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer"),
+     *         description="User ID"
+     *     ),
+     *     @OA\Parameter(
+     *         name="role",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="string"),
+     *         description="Roles: admin, user"
+     *     ),
+     *     @OA\Response(response=200, description="Deleted")
+     * )
+     */
+    public function removeRole(User $user, $role)
+    {
+        if (!$user->hasRole($role)) {
+            return response()->json(['message' => 'Error'], 400);
+        }
+
+        $user->removeRole($role);
+
+        return response()->json(['message' => 'Deleted']);
     }
 
-    $user->removeRole($role);
+    /**
+     * @OA\Delete(
+     *     path="/api/users/{id}/revoke-permission-to/{permission}",
+     *     summary="Revoke a permission from a user",
+     *     tags={"Users"},
+     *     security={{ "bearerAuth":{} }},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer"),
+     *         description="User ID"
+     *     ),
+     *     @OA\Parameter(
+     *         name="permission",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="string"),
+     *         description="Permissions: create user, edit user, delete user, view user"
+     *     ),
+     *     @OA\Response(response=200, description="Deleted")
+     * )
+     */
+    public function revokePermissionTo(User $user, $permission)
+    {
+        if (!$user->hasPermissionTo($permission)) {
+            return response()->json(['message' => 'Error'], 400);
+        }
 
-    return response()->json(['message' => 'Rol muvaffaqiyatli olib tashlandi']);
-}
+        $user->revokePermissionTo($permission);
 
-/**
- * @OA\Delete(
- *     path="/api/users/{id}/revoke-permission-to/{permission}",
- *     summary="Revoke a permission from a user",
- *     tags={"Users"},
- *     security={{ "bearerAuth":{} }},
- *     @OA\Parameter(
- *         name="id",
- *         in="path",
- *         required=true,
- *         @OA\Schema(type="integer"),
- *         description="Foydalanuvchi ID"
- *     ),
- *     @OA\Parameter(
- *         name="permission",
- *         in="path",
- *         required=true,
- *         @OA\Schema(type="string"),
- *         description="Permissions: create user, edit user, delete user, view user"
- *     ),
- *     @OA\Response(response=200, description="Deleted")
- * )
- */
-public function revokePermissionTo(User $user, $permission)
-{
-    // Foydalanuvchida ruxsat mavjudligini tekshirish
-    if (!$user->hasPermissionTo($permission)) {
-        return response()->json(['message' => 'Foydalanuvchida bu ruxsat mavjud emas'], 400);
+        return response()->json(['message' => 'Deleted']);
     }
-
-    $user->revokePermissionTo($permission);
-
-    return response()->json(['message' => 'Ruxsat muvaffaqiyatli bekor qilindi']);
-}
-
 }
